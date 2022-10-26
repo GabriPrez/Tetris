@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>Tetris</title>
+        <style> body{background: #ccc}</style>
+        <script src="tetris.js"></script>
+        <script>buf= '<center><form name="form1"><table border="0" cellspacing="3" cellpadding="3"><tr>'
+            +'<td>Nivel:<select name="s1" onchange="recuperarNivel();this.blur();">'
+            +'<option value=1 selected>1'
+            +'<option value=2>2'
+            +'<option value=3>3'
+            +'<option value=4>4'
+            +'<option value=5>5'
+            +'<option value=6>6'
+            +'<option value=7>7'
+            +'<option value=8>8'
+            +'<option value=9>9'
+            +'<option value=10>10'
+            +'</select></td>'
+            +'<td>Lineas:<input type="text" name="lineas" value="0" size="2" readonly></input></td>'
+            +'<td><input type="button" value="inicio" onclick="iniciarJuego()"></td>'
+            +'<td><input type="button" value="pausar" id="p-r" onclick="pausarJuego()"></td>'
+            +'</tr></table></form>';
+            
+            buf+='<span>';
+            for(i = 0; i<tableroAlto;i++){
+                for(j = 0; j<tableroAncho;j++){
+                    buf+='<a href="#" onclick="seleccionar('+i+','+j+');return false;"'
+                    +'><img name="s'+i+'_'+j+'" src="s'+Math.abs(f[i][j])+
+                    '.png" width=16 height=16 border=1></a>';
+                }
+                buf+="<br>";
+            }
+            buf+="</span></center>";
+        
+            document.writeln(buf);
+        
+            tableroCargado =1;
+            window.onload = function(){
+                inicio();
+            }</script>
+    </head>
+    <body></body >
+</html>
