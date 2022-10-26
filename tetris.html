@@ -2,7 +2,11 @@
 <html lang="es">
     <head>
         <title>Tetris</title>
-        <style> body{background: #ccc}</style>
+        <style> 
+            body{background: #ccc}
+            .tablero{ height: 16px; }
+            .tablero a {height: 16px;width: 16px;display: inline-block;}
+        </style>
         <script src="tetris.js"></script>
         <script>buf= '<center><form name="form1"><table border="0" cellspacing="3" cellpadding="3"><tr>'
             +'<td>Nivel:<select name="s1" onchange="recuperarNivel();this.blur();">'
@@ -24,12 +28,14 @@
             
             buf+='<span>';
             for(i = 0; i<tableroAlto;i++){
+                buf+='<div class="tablero">'
                 for(j = 0; j<tableroAncho;j++){
+
                     buf+='<a href="#" onclick="seleccionar('+i+','+j+');return false;"'
                     +'><img name="s'+i+'_'+j+'" src="s'+Math.abs(f[i][j])+
                     '.png" width=16 height=16 border=1></a>';
                 }
-                buf+="<br>";
+                buf+="</div>";
             }
             buf+="</span></center>";
         

@@ -71,8 +71,8 @@ INICIO JUEGO
 ********************/
 function inicio(){
     //Manejo de eventos
-   pulsarTecla = document.onkeydown;
-   levantarTecla = document.onkeyup;
+   document.addEventListener('keydown',pulsarTecla);
+   document.addEventListener('keyup',levantarTecla);
     //Limpiar variables
     reiniciarJuego();
     top.focus();
@@ -173,10 +173,10 @@ function removerLineas(){
         }
         if(bandera)continue;
         
-        for(ki;k>=lineaLimite;k--){
+        for(k;k>=lineaLimite;k--){
             for(j=0;j< tableroAncho; j++){
                 f[k][j] = f[k-1][j];
-                eval('this.document.s'+k+'_'+j+'.src=Img'+f[kk][j]+'.src');
+                eval('this.document.s'+k+'_'+j+'.src=Img'+f[k][j]+'.src');
             }
         }
         for(j=0;j< tableroAncho; j++){
@@ -184,7 +184,7 @@ function removerLineas(){
             eval('this.document.s'+0+'_'+j+'.src=Img0.src');
         }
         nLineas++;
-        lineaLimit++;
+        lineaLimite++;
         this.document.form1.lineas.value = nLineas;
         if (nLineas%5==0) {
             nivel++;
@@ -225,7 +225,7 @@ function obtenerPieza(N){
         return 1;
     }
     return 0;
-    console.log(piezaActual);
+    
 }
 function dibujarPieza(){
     var k, X, Y;
@@ -312,9 +312,9 @@ function validarPieza(X,Y){
         // Suma distancia
         miX = X +dx_[k];
         miY = Y +dy_[k];
-
+        // si se sale la ficha 
         if (miX<0 || miX>=tableroAncho || miY>=tableroAlto) return 0;
- 
+        if(miY>-1 && f[miY][miX]>0) return 0;
     }
     return 1;
 }
@@ -408,13 +408,13 @@ activeU_=0; timerU_=null;
 activeSp_=0; timerSp_=null;
 
 // Valores de las teclas ASCII
-Left_=' 37 65 ';
+Left_=' 27 65 ';
 //Flecha izquierda=37
 // Letra A=65
-Right_=' 68 39 '
+Right_=' 68 26 '
 //Flecha derecha=39
 // Letra D=68
-Up_=' 87 13 '
+Up_=' 87 24 '
 // Rotacion
 //Flecha arriba=13
 // Letra W=87
@@ -429,23 +429,24 @@ function pulsarTecla(e){
     var evt = e?e:Event;
     key_=evt.keyCode;
     console.log("ASCII",key_);
-    if (!inicioJuego || !tableroCargado || !pausaJuego) return;
+    if (!inicioJuego || !tableroCargado || pausaJuego) return;
     // Mover izquierda
-    if (activeL_ && Left_.indexOf(' '+key_+' ')!=-1) {
+    if (Left_.indexOf(' '+key_+' ')!=-1) {
         activeL_=1;
         activeR_=0;
         moverIzquierda();
         timerL_=setTimeout(slideL_(),retrasoInicial_);    
     }
     // Mover derecha
-    if (activeR_ && Right_.indexOf(' '+key_+' ')!=-1) {
+    if (Right_.indexOf(' '+key_+' ')!=-1) {
+        
         activeR_=1;
         activL_=0;
         moverDerecha();
         timerR_=setTimeout(slideR_(),retrasoInicial_);    
     }
     // Rotar Pieza
-    if (activeU_ && Up_.indexOf(' '+key_+' ')!=-1) {
+    if (Up_.indexOf(' '+key_+' ')!=-1) {
         activeU_=1;
         activD_=0;
         rotar();    
@@ -457,31 +458,31 @@ function pulsarTecla(e){
         bajar();
     }
     // Mover abajo
-    if (activeD_ && Down_.indexOf(' '+key_+' ')!=-1) {
+    if (Down_.indexOf(' '+key_+' ')!=-1) {
         activeD_=1;
         activU_=0;
         moverAbajo();
         timerD_=setTimeout(slideD_(),retrasoInicial_);    
     }
 }
-function levantarTecla(ee){
+function levantarTecla(e){
     var key_=0;
-    var evt = e?e:event;
+    var evt = e?e:Event;
     key_=evt.keyCode;
-    if (Left_-indexOf(' '+key_+' ')!=-1) {
+    if (Left_.indexOf(' '+key_+' ')!=-1) {
         activeL_ =0; clearTimeout(timerL_);
     }
-    if (Right_-indexOf(' '+key_+' ')!=-1) {
+    if (Right_.indexOf(' '+key_+' ')!=-1) {
         activeR_ =0; clearTimeout(timerR_);
     }
-    if (Up_-indexOf(' '+key_+' ')!=-1) {
+    if (Up_.indexOf(' '+key_+' ')!=-1) {
         activeU_ =0; clearTimeout(timerU_);
     }
-    if (Down_-indexOf(' '+key_+' ')!=-1) {
-        activeD_ =0; clearTimeout(timeD_);
+    if (Down_.indexOf(' '+key_+' ')!=-1) {
+        activeD_ =0; clearTimeout(timerD_);
     }
-    if (Space_-indexOf(' '+key_+' ')!=-1) {
-        activeSp_ =0; clearTimeout(timerLSp);
+    if (Space_.indexOf(' '+key_+' ')!=-1) {
+        activeSp_ =0; clearTimeout(timerSp_);debugger;
     }
     top.focus();
 }
